@@ -1,6 +1,6 @@
 package pcapparser.net;
 
-import pcapparser.util.HexHelper;
+import util.HexHelper;
 
 /**
  * MAC address.

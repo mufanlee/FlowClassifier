@@ -1,0 +1,130 @@
+2017-12-10 10:11:14 INFO [weka.WekaClassifier] Weka - Classify
+===========
+
+Classifier...: weka.classifiers.trees.J48 -C 0.25 -M 2
+Training file: datasets/201701.arff
+
+J48 pruned tree
+------------------
+
+dstPort <= 80
+|   dstPort <= 25: INTERACTIVE (16668.0)
+|   dstPort > 25
+|   |   dstPort <= 53: TRANSACTION (1164.0)
+|   |   dstPort > 53: BULK (32275.0)
+dstPort > 80
+|   meaETHBytes <= 46.285714
+|   |   srcPort <= 465
+|   |   |   srcPort <= 25: INTERACTIVE (43.0)
+|   |   |   srcPort > 25
+|   |   |   |   varIAT <= 235445364.222222
+|   |   |   |   |   srcPort <= 143: BULK (4.0)
+|   |   |   |   |   srcPort > 143: INTERACTIVE (2.0)
+|   |   |   |   varIAT > 235445364.222222: BULK (263.0)
+|   |   srcPort > 465
+|   |   |   dstIp <= -879807543
+|   |   |   |   dstPort <= 1028
+|   |   |   |   |   minETHBytes <= 42: INTERACTIVE (14.0/1.0)
+|   |   |   |   |   minETHBytes > 42: DEFAULT (11.0)
+|   |   |   |   dstPort > 1028: STREAMING (2401.0/19.0)
+|   |   |   dstIp > -879807543: INTERACTIVE (96.0/1.0)
+|   meaETHBytes > 46.285714
+|   |   srcPort <= 80
+|   |   |   srcPort <= 25: INTERACTIVE (9924.0)
+|   |   |   srcPort > 25: BULK (5953.0/2.0)
+|   |   srcPort > 80
+|   |   |   dstPort <= 1114
+|   |   |   |   minCTLBytes <= 40
+|   |   |   |   |   dstPort <= 135
+|   |   |   |   |   |   medBPLDBytes <= 8: DEFAULT (10.0)
+|   |   |   |   |   |   medBPLDBytes > 8: INTERACTIVE (19.0)
+|   |   |   |   |   dstPort > 135
+|   |   |   |   |   |   packetSize <= 29
+|   |   |   |   |   |   |   dstPort <= 585: INTERACTIVE (385.0)
+|   |   |   |   |   |   |   dstPort > 585
+|   |   |   |   |   |   |   |   dstPort <= 873: DEFAULT (4.0)
+|   |   |   |   |   |   |   |   dstPort > 873: INTERACTIVE (4.0)
+|   |   |   |   |   |   packetSize > 29: INTERACTIVE (27680.0/1.0)
+|   |   |   |   minCTLBytes > 40
+|   |   |   |   |   dstPort <= 465: INTERACTIVE (16.0)
+|   |   |   |   |   dstPort > 465: DEFAULT (17.0)
+|   |   |   dstPort > 1114
+|   |   |   |   srcPort <= 995: INTERACTIVE (5086.0/4.0)
+|   |   |   |   srcPort > 995
+|   |   |   |   |   medCTLBytes <= 24
+|   |   |   |   |   |   minRTT <= 1117
+|   |   |   |   |   |   |   medFIPBytes <= 32: INTERACTIVE (44.0/1.0)
+|   |   |   |   |   |   |   medFIPBytes > 32: TRANSACTION (10.0)
+|   |   |   |   |   |   minRTT > 1117
+|   |   |   |   |   |   |   medFIPBytes <= 84
+|   |   |   |   |   |   |   |   bpacketSize <= 158
+|   |   |   |   |   |   |   |   |   dstIp <= 1545863113: STREAMING (1217.0/4.0)
+|   |   |   |   |   |   |   |   |   dstIp > 1545863113
+|   |   |   |   |   |   |   |   |   |   medIPBytes <= 29: INTERACTIVE (4.0)
+|   |   |   |   |   |   |   |   |   |   medIPBytes > 29: STREAMING (21.0)
+|   |   |   |   |   |   |   |   bpacketSize > 158
+|   |   |   |   |   |   |   |   |   dstPort <= 1418: DEFAULT (4.0)
+|   |   |   |   |   |   |   |   |   dstPort > 1418: STREAMING (23.0/3.0)
+|   |   |   |   |   |   |   medFIPBytes > 84
+|   |   |   |   |   |   |   |   srcIp <= -2048393577: STREAMING (8.0)
+|   |   |   |   |   |   |   |   srcIp > -2048393577: DEFAULT (18.0/1.0)
+|   |   |   |   |   medCTLBytes > 24
+|   |   |   |   |   |   dstIp <= 1673699604
+|   |   |   |   |   |   |   medIAT <= 4223563
+|   |   |   |   |   |   |   |   minFIPBytes <= 23
+|   |   |   |   |   |   |   |   |   varFIPBytes <= 487.555556
+|   |   |   |   |   |   |   |   |   |   medBPLDBytes <= 124
+|   |   |   |   |   |   |   |   |   |   |   meaBCTLBytes <= 33.714286
+|   |   |   |   |   |   |   |   |   |   |   |   dstPort <= 2692: DEFAULT (13.0)
+|   |   |   |   |   |   |   |   |   |   |   |   dstPort > 2692
+|   |   |   |   |   |   |   |   |   |   |   |   |   medCTLBytes <= 42: STREAMING (13.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   medCTLBytes > 42: DEFAULT (6.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   meaBCTLBytes > 33.714286: INTERACTIVE (3.0)
+|   |   |   |   |   |   |   |   |   |   medBPLDBytes > 124: BULK (2.0)
+|   |   |   |   |   |   |   |   |   varFIPBytes > 487.555556
+|   |   |   |   |   |   |   |   |   |   medBIAT <= 87247: DEFAULT (496.0/3.0)
+|   |   |   |   |   |   |   |   |   |   medBIAT > 87247
+|   |   |   |   |   |   |   |   |   |   |   medIPBytes <= 26
+|   |   |   |   |   |   |   |   |   |   |   |   minBIAT <= 9: DEFAULT (2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   minBIAT > 9: INTERACTIVE (12.0)
+|   |   |   |   |   |   |   |   |   |   |   medIPBytes > 26: DEFAULT (48.0)
+|   |   |   |   |   |   |   |   minFIPBytes > 23
+|   |   |   |   |   |   |   |   |   srcIp <= 1315473111: DEFAULT (5.0)
+|   |   |   |   |   |   |   |   |   srcIp > 1315473111: BULK (20.0)
+|   |   |   |   |   |   |   medIAT > 4223563: STREAMING (68.0/1.0)
+|   |   |   |   |   |   dstIp > 1673699604: BULK (155.0/1.0)
+
+Number of Leaves  : 	44
+
+Size of the tree : 	87
+
+
+Correctly Classified Instances      104155               99.9271 %
+Incorrectly Classified Instances        76                0.0729 %
+Kappa statistic                          0.9986
+Mean absolute error                      0.0005
+Root mean squared error                  0.0169
+Relative absolute error                  0.2145 %
+Root relative squared error              5.2029 %
+Total Number of Instances           104231     
+
+=== Confusion Matrix ===
+
+     a     b     c     d     e   <-- classified as
+   615     2    16    15     0 |     a = DEFAULT
+     1 38666     1     3     0 |     b = BULK
+     5     3 59985     8     0 |     c = INTERACTIVE
+     6     1     5  3716     0 |     d = STREAMING
+     0     2     1     7  1173 |     e = TRANSACTION
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.949    0.000    0.981      0.949    0.965      0.965    0.991     0.933     DEFAULT
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     BULK
+                 1.000    0.001    1.000      1.000    1.000      0.999    1.000     1.000     INTERACTIVE
+                 0.997    0.000    0.991      0.997    0.994      0.994    0.999     0.991     STREAMING
+                 0.992    0.000    1.000      0.992    0.996      0.996    0.999     0.994     TRANSACTION
+Weighted Avg.    0.999    0.000    0.999      0.999    0.999      0.999    1.000     0.999     
+
+

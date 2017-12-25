@@ -40,7 +40,7 @@ public class FlowFeatures1 {
 
     private int payloadLen;
 
-    private FlowClass flowClass;
+    private FlowFeatureClass flowFeatureClass;
 
     public FlowFeatures1(int port, int protocol, boolean URG, boolean ACK, boolean PSH, boolean RST,
                         boolean SYN, boolean FIN, int flags, int length, long dstIP, int payload) {
@@ -62,12 +62,12 @@ public class FlowFeatures1 {
         return protocol;
     }
 
-    public FlowClass getFlowClass() {
-        return flowClass;
+    public FlowFeatureClass getFlowFeatureClass() {
+        return flowFeatureClass;
     }
 
-    public void setFlowClass(FlowClass flowClass) {
-        this.flowClass = flowClass;
+    public void setFlowFeatureClass(FlowFeatureClass flowFeatureClass) {
+        this.flowFeatureClass = flowFeatureClass;
     }
 
     public String toCSV() {
@@ -78,7 +78,7 @@ public class FlowFeatures1 {
                 .append(length).append(",")
                 .append(dstIP).append(",")
                 .append(payloadLen).append(",")
-                .append(flowClass);
+                .append(flowFeatureClass);
 
         return buffer.toString();
     }

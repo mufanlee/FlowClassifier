@@ -1,8 +1,8 @@
 package pcapparser;
 
-import pcapparser.util.AnsiEscapeSequences;
-import pcapparser.util.ArrayHelper;
-import pcapparser.util.Timeval;
+import util.AnsiEscapeSequences;
+import util.ArrayHelper;
+import util.Timeval;
 
 import java.io.Serializable;
 
@@ -112,7 +112,7 @@ public class RecordHeader implements RecordFields, Serializable{
     private Timeval _timeval = null;
     public Timeval getTime() {
         if (_timeval == null) {
-            _timeval = new Timeval(getTimestampSec(), getOrginalLength());
+            _timeval = new Timeval(getTimestampSec(), getTimestampUsec());
         }
         return _timeval;
     }

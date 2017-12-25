@@ -1,8 +1,8 @@
 package pcapparser.net;
 
-import pcapparser.util.AnsiEscapeSequences;
-import pcapparser.util.ArrayHelper;
-import pcapparser.util.Timeval;
+import util.AnsiEscapeSequences;
+import util.ArrayHelper;
+import util.Timeval;
 
 import java.io.Serializable;
 

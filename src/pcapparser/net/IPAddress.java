@@ -1,6 +1,6 @@
 package pcapparser.net;
 
-import pcapparser.util.ArrayHelper;
+import util.ArrayHelper;
 
 /**
  * IP address.

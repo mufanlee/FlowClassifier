@@ -1,7 +1,7 @@
 package pcapparser.net;
 
-import pcapparser.util.HexHelper;
-import pcapparser.util.Timeval;
+import util.HexHelper;
+import util.Timeval;
 
 import java.io.Serializable;
 

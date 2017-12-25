@@ -7,26 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/log4j-1.2.17.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/weka.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/libs/weka-src.jar!/src/main/java" />
-          <root url="jar://$MODULE_DIR$/libs/weka-src.jar!/src/test/java" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="libs" level="project" />
   </component>
 </module>

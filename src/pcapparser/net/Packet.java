@@ -1,6 +1,6 @@
 package pcapparser.net;
 
-import pcapparser.util.Timeval;
+import util.Timeval;
 
 import java.io.Serializable;
 

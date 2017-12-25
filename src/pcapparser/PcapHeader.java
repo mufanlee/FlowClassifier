@@ -1,9 +1,9 @@
 package pcapparser;
 
 import pcapparser.net.LinkLayer;
-import pcapparser.util.AnsiEscapeSequences;
-import pcapparser.util.ArrayHelper;
-import pcapparser.util.HexHelper;
+import util.AnsiEscapeSequences;
+import util.ArrayHelper;
+import util.HexHelper;
 
 import java.io.Serializable;
 

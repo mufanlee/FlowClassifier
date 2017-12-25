@@ -10,12 +10,11 @@ import weka.core.Instances;
 import weka.core.OptionHandler;
 import weka.core.Utils;
 import weka.core.converters.CSVLoader;
+import weka.core.converters.ConverterUtils;
 import weka.filters.Filter;
-import weka.filters.unsupervised.instance.RemovePercentage;
+import weka.filters.supervised.instance.Resample;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  * classify
  *
  * @author lipeng
- * @version 0.1
+ * @version 0.2
  */
 public class WekaClassifier {
     /**
@@ -53,6 +52,16 @@ public class WekaClassifier {
     protected Instances trainingSet = null;
 
     /**
+     * the training file
+     */
+    protected String testingFile = null;
+
+    /**
+     * the testing instances
+     */
+    protected Instances testingSet = null;
+
+    /**
      * for evaluating the classifier
      */
     protected Evaluation evaluation = null;
@@ -60,11 +69,11 @@ public class WekaClassifier {
     // construct
     public WekaClassifier() {}
 
-    public WekaClassifier(Classifier classifier, Filter filter, String trainingFile, Evaluation evaluation) throws Exception{
+    public WekaClassifier(Classifier classifier, Filter filter, String trainingFile, String testingFile) throws Exception{
         this.classifier = classifier;
         this.filter = filter;
         setTrainingSet(trainingFile);
-        this.evaluation = evaluation;
+        setTestingSet(testingFile);
     }
 
     /**
@@ -106,7 +115,7 @@ public class WekaClassifier {
      */
     public void setTrainingSet(String name) throws Exception {
         trainingFile = name;
-        String fileType = trainingFile.substring(trainingFile.lastIndexOf("."), trainingFile.length());
+        /*String fileType = trainingFile.substring(trainingFile.lastIndexOf("."), trainingFile.length());
         //logger.debug(fileType);
         switch (fileType) {
             case ".csv":
@@ -117,12 +126,36 @@ public class WekaClassifier {
                 trainingSet = new Instances(new BufferedReader(new FileReader(trainingFile)));
         }
         trainingSet.setClassIndex(trainingSet.numAttributes() - 1);
+        //logger.debug("DataSet\r\n" + trainingSet.toString());*/
+
+        ConverterUtils.DataSource loader = new ConverterUtils.DataSource(trainingFile);
+        trainingSet = loader.getDataSet();
+        if (trainingSet.classIndex() == -1)
+            trainingSet.setClassIndex(trainingSet.numAttributes() - 1);
         //logger.debug("DataSet\r\n" + trainingSet.toString());
     }
 
     public void setTrainingSet(Instances dataset) {
         trainingSet = dataset;
-        trainingSet.setClassIndex(trainingSet.numAttributes() - 1);
+        if (trainingSet.classIndex() == -1)
+            trainingSet.setClassIndex(trainingSet.numAttributes() - 1);
+    }
+
+    /**
+     * sets the file to use for testing
+     */
+    public void setTestingSet(String name) throws Exception {
+        testingFile = name;
+        ConverterUtils.DataSource loader = new ConverterUtils.DataSource(testingFile);
+        testingSet = loader.getDataSet();
+        if (testingSet.classIndex() == -1)
+            testingSet.setClassIndex(testingSet.numAttributes() - 1);
+    }
+
+    public void setTestingSet(Instances dataset) {
+        testingSet = dataset;
+        if (testingSet.classIndex() == -1)
+            testingSet.setClassIndex(testingSet.numAttributes() - 1);
     }
 
     /**
@@ -142,17 +175,34 @@ public class WekaClassifier {
      */
     public void execute() throws Exception {
         // run filter
-        filter.setInputFormat(trainingSet);
-        Instances filtered = Filter.useFilter(trainingSet, filter);
+        if (filter != null) {
+            filter.setInputFormat(trainingSet);
+            Instances filtered = Filter.useFilter(trainingSet, filter);
 
-        // train classifier on complete file for tree
-        classifier.buildClassifier(filtered);
+            // train classifier on complete file for tree
+            classifier.buildClassifier(filtered);
 
-        // 10fold CV with seed=1
-        evaluation = new Evaluation(filtered);
-        evaluation.crossValidateModel(classifier, filtered, 10,
-                trainingSet.getRandomNumberGenerator(1));
+            // 10fold CV with seed=1
+            evaluation = new Evaluation(filtered);
+            evaluation.crossValidateModel(classifier, filtered, 10,
+                    trainingSet.getRandomNumberGenerator(1));
+        } else {
+            classifier.buildClassifier(trainingSet);
+
+            evaluation = new Evaluation(trainingSet);
+            evaluation.crossValidateModel(classifier, trainingSet, 10,
+                    trainingSet.getRandomNumberGenerator(1));
+        }
     }
+
+    public Classifier getClassifier() {
+        return classifier;
+    }
+
+    public Evaluation getEvaluation() {
+        return evaluation;
+    }
+
 
     /**
      * outputs some data about the classifier
@@ -163,11 +213,13 @@ public class WekaClassifier {
         result.append("Weka - Classify\n===========\n\n");
 
         result.append("Classifier...: " + Utils.toCommandLine(classifier) + "\n");
-        if (filter instanceof OptionHandler) {
-            result.append("Filter.......: " + filter.getClass().getName() + " "
-                    + Utils.joinOptions(filter.getOptions()) + "\n");
-        } else {
-            result.append("Filter.......: " + filter.getClass().getName() + "\n");
+        if (filter != null) {
+            if (filter instanceof OptionHandler) {
+                result.append("Filter.......: " + filter.getClass().getName() + " "
+                        + Utils.joinOptions(filter.getOptions()) + "\n");
+            } else {
+                result.append("Filter.......: " + filter.getClass().getName() + "\n");
+            }
         }
         result.append("Training file: " + trainingFile + "\n");
         result.append("\n");
@@ -177,13 +229,11 @@ public class WekaClassifier {
         try {
             result.append(evaluation.toMatrixString() + "\n");
         } catch (Exception e) {
-            //e.printStackTrace();
             logger.warn("Append evaluation Matrix error: " + e);
         }
         try {
             result.append(evaluation.toClassDetailsString() + "\n");
         } catch (Exception e) {
-            //e.printStackTrace();
             logger.warn("Append evaluation ClassDetails error: " + e);
         }
 
@@ -203,10 +253,15 @@ public class WekaClassifier {
 
         // 3.Set the filter
         //String filter = "";
-        Filter filter = new RemovePercentage();
+        //Filter filter = new AllFilter();
+        Filter filter = new Resample();
         List<String> filterOptions = new ArrayList<>();
-        filterOptions.add("-P");
-        filterOptions.add("0.0");
+        filterOptions.add("-Z");
+        filterOptions.add("100");
+        filterOptions.add("-S");
+        filterOptions.add("1");
+        filterOptions.add("-B");
+        filterOptions.add("1");
 
         WekaClassifier wekaClassifier = new WekaClassifier();
         try {
@@ -217,7 +272,6 @@ public class WekaClassifier {
             wekaClassifier.execute();
             logger.info(wekaClassifier.toString());
         } catch (Exception e) {
-            //e.printStackTrace();
             logger.error("Weka execute error: " + e);
         }
     }
